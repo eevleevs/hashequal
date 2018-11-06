@@ -38,5 +38,5 @@ b = a * 2 #= 4  # comment
 edit hashequal.py to set them
 
 ~~~
-align_results = True  # if True aligns all results to the rightmost #=
+align_results = True  # if True all the results are aligned to the rightmost #=
 ~~~
