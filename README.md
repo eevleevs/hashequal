@@ -13,7 +13,7 @@ it modifies the calling script annotating the results of the operations marked w
 
 ### before running
 
-~~~
+~~~python
 #! /usr/bin/env python
 
 import hashequal
@@ -24,7 +24,7 @@ b = a * 2 #=  # comment
 
 ### after running
 
-~~~
+~~~python
 #! /usr/bin/env python
 
 import hashequal  # run 2018-11-06 18:59:54 UTC
@@ -37,6 +37,6 @@ b = a * 2 #= 4  # comment
 
 edit hashequal.py to set them
 
-~~~
+~~~python
 align_results = True  # if True all the results are aligned to the rightmost #=
 ~~~
