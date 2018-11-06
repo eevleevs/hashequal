@@ -27,7 +27,7 @@ b = a * 2 #=  # comment
 ~~~
 #! /usr/bin/env python
 
-import hashequal  # run 2018-11-06 09:59:54 UTC
+import hashequal  # run 2018-11-06 18:59:54 UTC
 
 a = 1 + 1 #= 2
 b = a * 2 #= 4  # comment
