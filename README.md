@@ -1,6 +1,6 @@
 # hashequal
-A Python module to run simple interactive notebooks  
-It modifies the calling script annotating the results of the operations marked with #= 
+a Python module to run simple interactive notebooks  
+it modifies the calling script annotating the results of the operations marked with #= 
 
 ## instructions
 
