@@ -11,7 +11,7 @@ it modifies the calling script annotating the results of the operations marked w
 
 ## example
 
-### before running
+before running
 
 ~~~python
 #! /usr/bin/env python
@@ -22,7 +22,7 @@ a = 1 + 1 #=
 b = a * 2 #=  # comment
 ~~~
 
-### after running
+after running
 
 ~~~python
 #! /usr/bin/env python
