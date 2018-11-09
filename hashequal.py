@@ -15,10 +15,13 @@ import re
 
 # init variables
 f = inspect.getframeinfo(inspect.stack()[1][0]).filename  # caller script name
-c = open(f).read().split('\n')  # caller script content lines
 p = 0  # alignment counter
 s = ''  # aux string
 t = '.hashequal_temp'  # temporary file name
+try:
+    c = open(f).read().split('\n')  # caller script content lines
+except IOError:
+    raise IOError('hashequal cannot be imported in interactive mode')
 
 # rewrite caller script to save results of operations marked with #= and save to temporary file
 for i in c:
