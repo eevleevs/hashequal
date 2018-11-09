@@ -6,7 +6,7 @@ it modifies the calling script annotating the results of the operations marked w
 
 - import *hashequal* at the beginning of the file, eventually just below the interpreter directive
 - mark every operation whose result is to be annotated with a #= comment
-- if there are further comments on a #= line, use another following #
+- if there need to be further comments on a #= line, use another following #
 - do not use the variable *hashequal_data*, it is used by the module for handling the results
 
 ## example
