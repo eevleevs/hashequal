@@ -25,7 +25,7 @@ t = '.hashequal_temp'  # temporary file name
 # rewrite caller script to save results of operations marked with #= and save to temporary file
 for i in c:
     if 'import hashequal' in i:  # prevent another call of import hashequal
-        s += i.split('import hashequal')[0] + 'import chardet; import json; hashequal_data = []\n'  # import json and init data container
+        s += i.replace('import hashequal', 'import chardet; import json; hashequal_data = []') + '\n'  # import other modules and init data container
     else:
         m = re.match('(\s*?([\w\d]*?)\s*?=.*?)#=(.*)', i)  # match #= lines
         if m:
