@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# a Python module to run simple interactive notebooks
+# a Python module to write simple interactive calculation notebooks
 # https://github.com/eevleevs/hashequal
 
 # congifuration
