@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# a Python module to write simple interactive calculation notebooks
+# a Python module to run simple interactive notebooks
 # https://github.com/eevleevs/hashequal
 
 # congifuration
@@ -20,20 +20,23 @@ if f == '<stdin>':
 c = open(f).read().split('\n')  # caller script content lines
 p = 0  # alignment counter
 s = ''  # aux string
-t = '.hashequal_temp'  # temporary file name
+t = 'hashequal_temp'  # temporary file name
+e = '((\s*)([\w\d]+)\s*?=?.*?)#=(.*)'
 
 # rewrite caller script to save results of operations marked with #= and save to temporary file
+ic = 1
 for i in c:
     if 'import hashequal' in i:  # prevent another call of import hashequal
         s += i.replace('import hashequal', 'import chardet; import json; hashequal_data = []') + '\n'  # import other modules and init data container
     else:
-        m = re.match('(\s*?([\w\d]*?)\s*?=.*?)#=(.*)', i)  # match #= lines
+        m = re.match(e, i)  # match #= lines
         if m:
-            s += m.group(1) + '; hashequal_data.append(str(' + m.group(2) + ').decode(chardet.detect(str(' + m.group(2) + '))[\'encoding\']))\n'  # insert code for saving to temporary variable
+            s += (m.group(1) + '; ' if '=' in m.group(1) else m.group(2)) + 'hashequal_data.append(\'' + str(ic) + ':\' + str(' + m.group(3) + ').decode(chardet.detect(str(' + m.group(3) + '))[\'encoding\']))\n'  # insert code for saving to temporary variable
             if (len(m.group(1)) > p):
                 p = len(m.group(1))  # adjust alignment counter
         else:
             s += i + '\n'
+    ic += 1
 s += 'open(\'' + t + '\', \'w\').write(json.dumps(hashequal_data))'  # insert code for writing results
 open(t, 'w').write(s)  # write modified script
 
@@ -41,23 +44,34 @@ open(t, 'w').write(s)  # write modified script
 if not os.system('python ' + t):
 
     # load results and rewrite original script to include them as comments
-    d = json.loads(open(t).read())
+    d = {}
+    for i in json.loads(open(t).read()):
+        i = i.split(':', 1)
+        try:
+            d[i[0]].append(i[1])
+        except KeyError:
+            d[i[0]] = [i[1]]
     s = ''
     if align_results:
         p -= 1
     else:
         p = 0
+    ic = 1
     for i in c:
-        m = re.match('(\s*?([\w\d]*?)\s*?=.*?)#=(.*)', i)  # match #= lines
-        if m:
-            s += m.group(1).rstrip().ljust(p) + ' #= ' + str(d.pop(0).encode('utf8'))  # insert result
-            if '#' in m.group(3):
-                s += '  # ' + m.group(3).split('#', 1)[1].strip()  # insert eventual comments after result
+        if str(ic) in d.keys():
+            m = re.match(e, i) 
+            s += m.group(1).rstrip().ljust(p) + ' #= ' 
+            while d[str(ic)]:
+                s += d[str(ic)].pop(0).encode('utf8') + ', '  # insert result
+            s = s[:-2]  # remove last comma and space
+            if '#' in m.group(4):
+                s += '  # ' + m.group(4).split('#', 1)[1].strip()  # insert eventual comments after result
         elif 'import hashequal' in i:
             s += i.split('#')[0].rstrip() + '  # run ' + str(datetime.datetime.utcnow()).split('.')[0] + ' UTC'  # insert run time on import hashequal line
         else:
             s += i          
         s += '\n'
+        ic += 1
     open(f, 'w').write(s[:-1])  # overwrite original script with annotated file
 
 # remove modified script and prevent execution of orginal script
