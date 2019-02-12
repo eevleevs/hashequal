@@ -4,7 +4,7 @@
 # https://github.com/eevleevs/hashequal
 
 # congifuration
-align_results = True  # if True aligns all results to the rightmost #=
+align_results = False  # if True aligns all results to the rightmost #=
 
 # import
 import datetime
@@ -21,7 +21,7 @@ c = open(f).read().split('\n')  # caller script content lines
 p = 0  # alignment counter
 s = ''  # aux string
 t = 'hashequal_temp'  # temporary file name
-e = '((\s*)([\w\d]+)\s*?=?.*?)#=(.*)'
+e = '(\s*)(([\w\d]+)\s*?=?.*?)#=(.*)'  # search pattern
 
 # rewrite caller script to save results of operations marked with #= and save to temporary file
 ic = 1
@@ -31,9 +31,9 @@ for i in c:
     else:
         m = re.match(e, i)  # match #= lines
         if m:
-            s += (m.group(1) + '; ' if '=' in m.group(1) else m.group(2)) + 'hashequal_data.append(\'' + str(ic) + ':\' + str(' + m.group(3) + ').decode(chardet.detect(str(' + m.group(3) + '))[\'encoding\']))\n'  # insert code for saving to temporary variable
-            if (len(m.group(1)) > p):
-                p = len(m.group(1))  # adjust alignment counter
+            s += m.group(1) + m.group(2) + '; hashequal_data.append(\'' + str(ic) + ':\' + str(' + m.group(3) + ').decode(chardet.detect(str(' + m.group(3) + '))[\'encoding\']))\n'  # insert code for saving to temporary variable
+            if (len(m.group(1) + m.group(2)) > p):
+                p = len(m.group(1) + m.group(2))  # adjust alignment counter
         else:
             s += i + '\n'
     ic += 1
@@ -60,7 +60,7 @@ if not os.system('python ' + t):
     for i in c:
         if str(ic) in d.keys():
             m = re.match(e, i) 
-            s += m.group(1).rstrip().ljust(p) + ' #= ' 
+            s += (m.group(1) + m.group(2)).rstrip().ljust(p) + ' #= ' 
             while d[str(ic)]:
                 s += d[str(ic)].pop(0).encode('utf8') + ', '  # insert result
             s = s[:-2]  # remove last comma and space
