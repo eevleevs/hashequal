@@ -21,7 +21,7 @@ c = open(f).read().split('\n')  # caller script content lines
 p = 0  # alignment counter
 s = ''  # aux string
 t = 'hashequal_temp'  # temporary file name
-e = '(\s*([\w\d]+)\s*?=?.*?)#=(.*)'  # search pattern
+e = r'(\s*([\w\d]+)\s*?=?.*?)#=(.*)'  # search pattern
 
 # rewrite caller script to save results of operations marked with #= and save to temporary file
 ic = 1
