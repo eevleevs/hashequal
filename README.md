@@ -1,5 +1,5 @@
 # hashequal
-a Python module to write simple calculation notebooks  
+a Python module to write quasi-interactive calculation notebooks  
 it modifies the calling script annotating the results of the operations marked with #= 
 
 ## instructions
