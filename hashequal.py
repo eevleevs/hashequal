@@ -62,7 +62,7 @@ if not os.system('python ' + t):
             m = re.match(e, i) 
             s += m.group(1).rstrip().ljust(p) + ' #= ' 
             while d[str(ic)]:
-                s += d[str(ic)].pop(0).encode('utf8') + b', '  # insert result
+                s += (d[str(ic)].pop(0).encode('utf8') + b', ').decode('utf8')  # insert result
             s = s[:-2]  # remove last comma and space
             if '#' in m.group(3):
                 s += '  # ' + m.group(3).split('#', 1)[1].strip()  # insert eventual comments after result
