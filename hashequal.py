@@ -3,7 +3,7 @@
 # a Python module to make quasi interactive math sheets
 # https://github.com/eevleevs/hashequal
 
-# congifuration
+# options
 align_results = False  # if True aligns all results to the rightmost #=
 
 # import
