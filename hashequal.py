@@ -11,6 +11,7 @@ import datetime
 import inspect
 import json
 import os
+import random
 import re
 
 # init variables
@@ -21,23 +22,24 @@ c = open(f).read().split('\n')  # caller script content lines
 p = 0  # alignment counter
 s = ''  # aux string
 t = 'hashequal_temp'  # temporary file name
+h = 'hashequal_data' + str(random.randrange(1e10))  # data variable name (randomised)
 e = r'(\s*([\w\d]+)\s*?=?.*?)#=(.*)'  # search pattern
 
 # rewrite caller script to save results of operations marked with #= and save to temporary file
 ic = 1
 for i in c:
     if 'import hashequal' in i:  # prevent another call of import hashequal
-        s += i.replace('import hashequal', 'import chardet; import json; hashequal_data = []') + '\n'  # import other modules and init data container
+        s += i.replace('import hashequal', 'import chardet; import json; ' + h + ' = []') + '\n'  # import other modules and init data container
     else:
         m = re.match(e, i)  # match #= lines
         if m:
-            s += m.group(1) + '; hashequal_data.append(\'' + str(ic) + ':\' + str(' + m.group(2) + ').decode(chardet.detect(str(' + m.group(2) + '))[\'encoding\']))\n'  # insert code for saving to temporary variable
+            s += m.group(1) + '; ' + h + '.append(\'' + str(ic) + ':\' + str(' + m.group(2) + ').decode(chardet.detect(str(' + m.group(2) + '))[\'encoding\']))\n'  # insert code for saving to temporary variable
             if (len(m.group(1)) > p):
                 p = len(m.group(1))  # adjust alignment counter
         else:
             s += i + '\n'
     ic += 1
-s += 'open(\'' + t + '\', \'w\').write(json.dumps(hashequal_data))'  # insert code for writing results
+s += 'open(\'' + t + '\', \'w\').write(json.dumps(' + h + '))'  # insert code for writing results
 open(t, 'w').write(s)  # write modified script
 
 # run modified script, overwrites self with results
@@ -74,6 +76,6 @@ if not os.system('python ' + t):
         ic += 1
     open(f, 'w').write(s[:-1])  # overwrite original script with annotated file
 
-# remove modified script and prevent execution of orginal script
+# remove temporary file and prevent execution of orginal script
 os.remove(t)
 exit()
