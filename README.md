@@ -30,7 +30,7 @@ b = a * 2 #= 4  # comment
 
 - `import hashequal` at the beginning of the file, eventually just below the interpreter directive
 - mark every operation whose result is to be annotated with an `#=` comment
-- if there need to be further comments on an `#=` line, use another following #
+- if there need to be further comments on an `#=` line, use another following `#`
 
 ## known issues
 
