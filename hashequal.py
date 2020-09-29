@@ -44,7 +44,7 @@ s1 = re.sub(r'#=\/.*?(#.*)?$', r'#= n/a  \1', s1, flags=re.MULTILINE)
 s1 = re.sub(r'#=  $', r'#= n/a', s1, flags=re.MULTILINE)
 
 # mark run time
-s1 = re.sub(r'(.*?import hashequal).*', r'\1  # run '
+s1 = re.sub(r'(.*?import hashequal).*', r'\1  #/ run '
     + str(datetime.datetime.utcnow()).split('.')[0] + ' UTC', s1)
 
 # overwrite caller script, possibly making a backup
