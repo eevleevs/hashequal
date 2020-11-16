@@ -16,9 +16,11 @@ s1 = open(caller_filename, encoding='utf-8').read()
 
 # assign a progressive number to every #=, e.g. "#=/number/"
 counter = 0
-for line in re.findall(r'^.*?#=.*$', s1, flags=re.MULTILINE):
-    s1 = s1.replace(line, re.sub(r'#=.*?(#?.*)', r'#=/' + str(counter) + r'/\1', line), 1)
+def replacer(m):
+    global counter
     counter += 1
+    return f'{m[1]}#=/{counter}/'
+s1 = re.sub(r'^(.*)#=', replacer, s1, flags=re.MULTILINE)
 
 # remove line continuations
 s2 = s1.replace('\\\n', '')
