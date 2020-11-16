@@ -20,7 +20,7 @@ def replacer(m):
     global counter
     counter += 1
     return f'{m[1]}#=/{counter}/'
-s1 = re.sub(r'^(.*)#=', replacer, s1, flags=re.MULTILINE)
+s1 = re.sub(r'^([^#]*)#=', replacer, s1, flags=re.MULTILINE)
 
 # remove line continuations
 s2 = s1.replace('\\\n', '')
