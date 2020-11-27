@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-# a Python module to make quasi interactive math sheets
+# a Python tool for quasi interactive math sheets
 # https://github.com/eevleevs/hashequal
 
 import datetime
