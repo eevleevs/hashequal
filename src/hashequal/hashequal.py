@@ -12,7 +12,8 @@ import shutil
 caller_filename = inspect.getframeinfo(inspect.stack()[-1][0]).filename
 if caller_filename == '<stdin>':
     raise ImportError('hashequal cannot be imported in interactive mode')
-s1 = open(caller_filename, encoding='utf-8').read()
+with open(caller_filename, encoding='utf-8') as file:
+    s1 = file.read()
 
 # assign a progressive number to every #=, e.g. "#=/number/"
 counter = 0
@@ -51,7 +52,8 @@ s1 = re.sub(r'(.*?import hashequal).*', r'\1  #/ run '
 
 # overwrite caller script, possibly making a backup
 shutil.copyfile(caller_filename, caller_filename + '~')
-open(caller_filename, 'w', encoding='utf-8').write(s1)
+with open(caller_filename, 'w', encoding='utf-8') as file:
+    file.write(s1)
 
 # stop execution
 exit()
