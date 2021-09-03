@@ -20,13 +20,13 @@ def replacer(m):
     global counter
     counter += 1
     return f'{m[1]}#=/{counter}/'
-s1 = re.sub(r'^([^#]*)#=', replacer, s1, flags=re.MULTILINE)
+s1 = re.sub(r'^([^#]*)#=', replacer, s1, flags=re.M)
 
 # remove line continuations
 s2 = s1.replace('\\\n', '')
 
 # substitute "import hashequal" with "pass"
-s2 = re.sub(r'^(\s+).*?import hashequal.*$', r'\1pass', s2, flags=re.MULTILINE)
+s2 = re.sub(r'^(\s+).*?import hashequal.*$', r'\1pass', s2, flags=re.M)
 
 # prepend "hashequal_data[number] = " to every line with a "#=/number/"
 s2 = re.sub(r'(\s*)(.*?)#=\/(\d+)\/(.*)', r'\1hashequal_data[\3] = \2', s2)
@@ -39,11 +39,11 @@ exec(s2, {'hashequal_data':hashequal_data, '__name__':'__main__'})
 for key,value in hashequal_data.items():
     s1 = re.sub(r'#=\/' + str(key) + r'\/.*?(#.*)?$',
         lambda m: f'#= {value}' + (f'  {m[1]}' if m[1] else ''),
-        s1, flags=re.MULTILINE)
+        s1, flags=re.M)
 
 # clear keys that were not evaluated
-s1 = re.sub(r'#=\/.*?(#.*)?$', r'#= n/a  \1', s1, flags=re.MULTILINE)
-s1 = re.sub(r'#=  $', r'#= n/a', s1, flags=re.MULTILINE)
+s1 = re.sub(r'#=\/.*?(#.*)?$', r'#= n/a  \1', s1, flags=re.M)
+s1 = re.sub(r'#=  $', r'#= n/a', s1, flags=re.M)
 
 # mark run time
 s1 = re.sub(r'(.*?import hashequal).*', r'\1  #/ run '
