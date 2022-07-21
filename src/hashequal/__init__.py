@@ -39,7 +39,7 @@ exec(s2, {'hashequal_data':hashequal_data, '__name__':'__main__'})
 # substitute results in s1
 for key,value in hashequal_data.items():
     s1 = re.sub(r'#=\/' + str(key) + r'\/.*?(#.*)?$',
-        lambda m: f'#= {value}' + (f'  {m[1]}' if m[1] else ''),
+        lambda m: '#= ' + str(value).replace('\n', '') + (f'  {m[1]}' if m[1] else ''),
         s1, flags=re.M)
 
 # clear keys that were not evaluated
