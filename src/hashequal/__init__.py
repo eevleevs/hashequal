@@ -43,7 +43,7 @@ for key,value in hashequal_data.items():
         s1, flags=re.M)
 
 # clear keys that were not evaluated
-s1 = re.sub(r'#=\/.*?(#.*)?$', r'#= n/a  \1', s1, flags=re.M)
+s1 = re.sub(r'#=\/.*?(#.*)?$', lambda m: f'#= n/a' + (f'  {m[1]}' if m[1] else ''), s1, flags=re.M)
 s1 = re.sub(r'#=  $', r'#= n/a', s1, flags=re.M)
 
 # mark run time
